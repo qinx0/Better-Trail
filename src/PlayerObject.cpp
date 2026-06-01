@@ -493,6 +493,7 @@ void ProPlayerObject::update(float dt) {
     if (isVanillaPlayer()) {
         if (auto* pl = PlayLayer::get()) {
             if (this == pl->m_player1 || this == pl->m_player2) {
+                if (std::strstr(getID().c_str(), "eclipse")) return;
                 updateTrailPulse();
                 updateNewTrail(dt);
             }
