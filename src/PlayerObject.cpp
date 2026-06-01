@@ -327,6 +327,7 @@ void ProPlayerObject::updateNewTrail(float dt) {
 
         for (int i = 0; i < pointArray.size() - 1; i++) {
             auto pointNode = pointArray[i];
+            if (!pointNode || !pointArray[i + 1]) continue;
             if (isPointOffscreen(pointNode->m_point) && isPointOffscreen(pointArray[i + 1]->m_point)) {
                 f->fakeTrail->m_pointArray->removeObject(pointNode, true);
             }
@@ -437,6 +438,7 @@ void ProPlayerObject::updateNewTrail(float dt) {
 
     for (int i = 0; i < pointArray.size() - 1; i++) {
         auto pointNode = pointArray[i];
+        if (!pointNode || !pointArray[i + 1]) continue;
         if (isPointOffscreen(pointNode->m_point) && isPointOffscreen(pointArray[i + 1]->m_point)) {
             f->newTrail->m_pointArray->removeObject(pointNode, true);
         }
@@ -493,7 +495,6 @@ void ProPlayerObject::update(float dt) {
     if (isVanillaPlayer()) {
         if (auto* pl = PlayLayer::get()) {
             if (this == pl->m_player1 || this == pl->m_player2) {
-                if (std::strstr(getID().c_str(), "eclipse")) return;
                 updateTrailPulse();
                 updateNewTrail(dt);
             }
