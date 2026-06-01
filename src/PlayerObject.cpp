@@ -492,10 +492,11 @@ void ProPlayerObject::update(float dt) {
 
     if (isVanillaPlayer()) {
         if (auto* pl = PlayLayer::get()) {
-            if (this != pl->m_player1 && this != pl->m_player2) return;
+            if (this == pl->m_player1 || this == pl->m_player2) {
+                updateTrailPulse();
+                updateNewTrail(dt);
+            }
         }
-        updateTrailPulse();
-        updateNewTrail(dt);
     }
 }
 
