@@ -25,24 +25,13 @@ bool ProPlayerObject::isTrailEnabled(bool ignoreWave) {
         || (isCube() && getSetting<"enable-cube-trail", bool>());
     }
 
-bool ProPlayerObject::isPointOffscreen(const CCPoint& point) {
-    auto winSize = CCDirector::get()->getWinSize();
-    auto pos = m_gameLayer->m_objectLayer->convertToWorldSpaceAR(point);
-    auto cameraCenter = m_gameLayer->m_cameraObb2->m_center;
-    auto angle = CC_DEGREES_TO_RADIANS(-m_gameLayer->m_gameState.m_cameraAngle);
-    auto cosA = cosf(angle);
-    auto sinA = sinf(angle);
-    auto offsetX = pos.x - cameraCenter.x;
-    auto offsetY = pos.y - cameraCenter.y;
-    auto rotatedX = offsetX * cosA - offsetY * sinA;
-    auto rotatedY = offsetX * sinA + offsetY * cosA;
-
-    pos = ccp(cameraCenter.x + rotatedX, cameraCenter.y + rotatedY);
-
-    return pos.x < 0 || pos.y < 0 || pos.x > winSize.width || pos.y > winSize.height;
+bool ProPlayerObject::isPointOffscreen(const CCPoint&) {
+    return false;
 }
 
 void ProPlayerObject::copyTrailProperties(HardStreak* trail) {
+    if (!m_waveTrail) return;
+
     if (auto fakeTrail = m_fields->fakeTrail; fakeTrail && trail != fakeTrail) {
         copyTrailProperties(fakeTrail);
     }
@@ -142,6 +131,8 @@ void ProPlayerObject::justDied() {
 }
 
 void ProPlayerObject::updateSettings() {
+    if (!m_waveTrail) return;
+
     auto f = m_fields.self();
     
     if (getSetting<"enable-trail-rgb", bool>() && !f->didScheduleUpdate) {
@@ -167,6 +158,8 @@ void ProPlayerObject::updateSettings() {
 }
 
 void ProPlayerObject::updateTrailColor() {
+    if (!m_waveTrail) return;
+
     if (getSetting<"enable-trail-rgb", bool>()) {
         return;
     }
@@ -204,6 +197,8 @@ void ProPlayerObject::updateTrailColor() {
 }
 
 void ProPlayerObject::updateSolidTrail() {
+    if (!m_waveTrail) return;
+
     auto f = m_fields.self();
 
     if (getSetting<"solid-wave-trail", bool>()) {
@@ -228,6 +223,8 @@ void ProPlayerObject::updateSolidTrail() {
 }
 
 void ProPlayerObject::updateTrailSize() {
+    if (!m_waveTrail) return;
+
     auto f = m_fields.self();
     auto value = getSetting<"trail-size", float>();
 
@@ -247,12 +244,16 @@ void ProPlayerObject::updateTrailSize() {
 }
 
 void ProPlayerObject::updateTrailPulse() {
+    if (!m_waveTrail) return;
+
     if (getSetting<"disable-pulse", bool>()) {
         m_waveTrail->m_pulseSize = 1.4f;
     }
 }
 
 void ProPlayerObject::updateRegularTrail() {
+    if (!m_regularTrail) return;
+
     auto doHide = getSetting<"hide-regular-trail", bool>() && isTrailEnabled();
 
     if (!doHide) {
@@ -290,6 +291,8 @@ void ProPlayerObject::updateParticles() {
 }
 
 void ProPlayerObject::updateNewTrail(float dt) {
+    if (!m_waveTrail) return;
+
     auto f = m_fields.self();
 
     if (f->megahackLoaded) {
@@ -439,7 +442,7 @@ void ProPlayerObject::updateNewTrail(float dt) {
 }
 
 void ProPlayerObject::updateTrailRGB(float dt) {
-    if (!getSetting<"enable-trail-rgb", bool>()) {
+    if (!m_waveTrail || !getSetting<"enable-trail-rgb", bool>()) {
         return;
     }
 

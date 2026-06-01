@@ -1,5 +1,5 @@
 {
-	"geode": "5.5.2",
+	"geode": "5.7.1",
 	"gd": {
 		"win": "2.2081",
 		"android": "2.2081",
@@ -8,7 +8,7 @@
 	},
 	"id": "p4vkfr.better_trail",
 	"name": "Better Trail",
-	"version": "v1.0.3",
+	"version": "v1.0.31",
 	"developer": "P4vkFR",
 	"tags": [
 		"gameplay", "offline", "enhancement", "bugfix", "utility", "customization", "cheat"
