@@ -26,7 +26,9 @@ bool ProPlayerObject::isTrailEnabled(bool ignoreWave) {
     }
 
 bool ProPlayerObject::isPointOffscreen(const CCPoint& point) {
-    auto winSize = CCDirector::get()->getWinSize();
+    auto* director = CCDirector::get();
+    if (!director) return false;
+    auto winSize = director->getWinSize();
     return point.x < -100.f || point.y < -100.f ||
            point.x > winSize.width + 100.f || point.y > winSize.height + 100.f;
 }
@@ -488,10 +490,7 @@ void ProPlayerObject::updateTrailRGB(float dt) {
 void ProPlayerObject::update(float dt) {
     PlayerObject::update(dt);
 
-    if (isVanillaPlayer()) {
-        if (auto* bgl = GJBaseGameLayer::get()) {
-            if (this != bgl->m_player1 && this != bgl->m_player2) return;
-        }
+    if (isVanillaPlayer() && getID() != "show-trajectory-player"_spr) {
         updateTrailPulse();
         updateNewTrail(dt);
     }
