@@ -8,15 +8,11 @@ void ProPlayLayer::updateSettings() {
 
 void ProPlayLayer::setupHasCompleted() {
     PlayLayer::setupHasCompleted();
-    static_cast<ProPlayerObject*>(m_player1)->m_fields->isRealPlayer = true;
-    static_cast<ProPlayerObject*>(m_player2)->m_fields->isRealPlayer = true;
     updateSettings();
 }
 
 void ProPlayLayer::resetLevel() {
     PlayLayer::resetLevel();
-    static_cast<ProPlayerObject*>(m_player1)->m_fields->isRealPlayer = true;
-    static_cast<ProPlayerObject*>(m_player2)->m_fields->isRealPlayer = true;
     updateSettings();
 }
 

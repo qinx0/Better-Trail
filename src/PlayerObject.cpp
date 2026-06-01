@@ -490,7 +490,10 @@ void ProPlayerObject::updateTrailRGB(float dt) {
 void ProPlayerObject::update(float dt) {
     PlayerObject::update(dt);
 
-    if (isVanillaPlayer() && m_fields->isRealPlayer) {
+    if (isVanillaPlayer()) {
+        if (auto* pl = PlayLayer::get()) {
+            if (this != pl->m_player1 && this != pl->m_player2) return;
+        }
         updateTrailPulse();
         updateNewTrail(dt);
     }

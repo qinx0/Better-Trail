@@ -10,7 +10,6 @@ class $modify(ProPlayerObject, PlayerObject) {
         Fields();
 
         bool megahackLoaded = false;
-        bool isRealPlayer = false;
 
         HardStreak* newTrail = nullptr;
         HardStreak* fakeTrail = nullptr;
