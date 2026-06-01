@@ -25,8 +25,10 @@ bool ProPlayerObject::isTrailEnabled(bool ignoreWave) {
         || (isCube() && getSetting<"enable-cube-trail", bool>());
     }
 
-bool ProPlayerObject::isPointOffscreen(const CCPoint&) {
-    return false;
+bool ProPlayerObject::isPointOffscreen(const CCPoint& point) {
+    auto winSize = CCDirector::get()->getWinSize();
+    return point.x < -100.f || point.y < -100.f ||
+           point.x > winSize.width + 100.f || point.y > winSize.height + 100.f;
 }
 
 void ProPlayerObject::copyTrailProperties(HardStreak* trail) {
@@ -487,6 +489,9 @@ void ProPlayerObject::update(float dt) {
     PlayerObject::update(dt);
 
     if (isVanillaPlayer()) {
+        if (auto* bgl = GJBaseGameLayer::get()) {
+            if (this != bgl->m_player1 && this != bgl->m_player2) return;
+        }
         updateTrailPulse();
         updateNewTrail(dt);
     }
