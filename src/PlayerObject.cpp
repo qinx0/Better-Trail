@@ -490,7 +490,7 @@ void ProPlayerObject::updateTrailRGB(float dt) {
 void ProPlayerObject::update(float dt) {
     PlayerObject::update(dt);
 
-    if (isVanillaPlayer() && getID() != "show-trajectory-player"_spr) {
+    if (isVanillaPlayer() && getID().empty()) {
         updateTrailPulse();
         updateNewTrail(dt);
     }
